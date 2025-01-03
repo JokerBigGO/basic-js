@@ -1,15 +1,13 @@
 const { NotImplementedError } = require('../extensions/index.js');
 
-const MODERN_ACTIVITY = 15;
-const HALF_LIFE_PERIOD = 5730;
+const MODERN_ACTIVITY = 15;  // Сучасна активність
+const HALF_LIFE_PERIOD = 5730;  // Період піврозпаду
 
 /**
- * Determine the age of archeological find by using
- * given MODERN_ACTIVITY and HALF_LIFE_PERIOD values
+ * Функція для визначення віку археологічної знахідки на основі активності зразка.
  * 
- * @param {String} sampleActivity string representation of current activity 
- * @return {Number | Boolean} calculated age in years or false
- * in case of incorrect sampleActivity
+ * @param {String} sampleActivity — строкове представлення поточної активності зразка.
+ * @return {Number | Boolean} обчислений вік у роках або false у разі некоректного sampleActivity.
  *
  * @example
  * 
@@ -17,9 +15,20 @@ const HALF_LIFE_PERIOD = 5730;
  * dateSample('WOOT!') => false
  *
  */
-function dateSample(/* sampleActivity */) {
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
+function dateSample(sampleActivity) {
+  // Перевірка на коректність вхідного параметра
+  if (typeof sampleActivity !== 'string' || isNaN(sampleActivity) || Number(sampleActivity) <= 0 || Number(sampleActivity) > MODERN_ACTIVITY) {
+    return false;
+  }
+
+  const sampleActivityValue = Number(sampleActivity);
+
+  // Обчислення віку за допомогою формули вуглецевого датування:
+  // t = (ln(MODERN_ACTIVITY / sampleActivity) / (0.693 / HALF_LIFE_PERIOD))
+  const age = Math.log(MODERN_ACTIVITY / sampleActivityValue) / (0.693 / HALF_LIFE_PERIOD);
+
+  // Округлення результату до найближчого цілого числа
+  return Math.ceil(age);
 }
 
 module.exports = {
